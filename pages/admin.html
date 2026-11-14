@@ -1,167 +1,217 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUIZROOM — Administration</title>
-    <link rel="stylesheet" href="../styles/dashboard.css">
-    <script src="../js/dashboard.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUIZROOM — Administration</title>
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <script src="../js/dashboard.js" defer></script>
 </head>
+
 <body data-role="admin">
 
-    <header class="navbar">
-        <a href="index.html" class="logo">Q.</a>
+  <header class="navbar">
+    <a href="index.html" class="logo">Q.</a>
 
-        <nav class="nav-left">
-            <a href="index.html" class="nav-pill">EXPLORE</a>
-            <a href="admin.html" class="nav-pill active">MANAGEMENT</a>
-        </nav>
+    <nav class="nav-left">
+      <a href="index.html" class="nav-pill">EXPLORE</a>
+      <a href="admin.html" class="nav-pill active">MANAGEMENT</a>
+    </nav>
 
-        <div class="nav-right">
-            <span class="user-label">ADMINISTRATOR</span>
-            <button class="nav-pill logout-btn">LOG OUT ↗</button>
+    <div class="nav-right">
+      <span class="user-label">ADMINISTRATOR</span>
+      <button class="nav-pill logout-btn">LOG OUT ↗</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+
+    <section class="welcome">
+      <div>
+        <span class="eyebrow">ADMINISTRATION PANEL</span>
+        <h1>Good day,<br><span id="user-name">Administrator.</span></h1>
+        <p>Manage your platform. Keep the knowledge flowing.</p>
+      </div>
+
+      <button class="primary-btn" id="create-quiz">
+        + CREATE QUIZ
+      </button>
+    </section>
+
+    <!-- Add Quiz Form -->
+<section class="dashboard-section" id="create-quiz-section" hidden>
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">NEW CONTENT</span>
+            <h2>Add a quiz.</h2>
         </div>
-    </header>
+    </div>
 
-    <main class="dashboard">
+    <form id="create-quiz-form">
+        <div>
+            <label for="quiz-title">Quiz title</label>
+            <input
+                type="text"
+                id="quiz-title"
+                name="title"
+                required
+                maxlength="150"
+                placeholder="e.g. JavaScript Fundamentals"
+            >
+        </div>
 
-        <section class="welcome">
-            <div>
-                <span class="eyebrow">ADMINISTRATION PANEL</span>
-                <h1>Good day,<br><span id="user-name">Administrator.</span></h1>
-                <p>Manage your platform. Keep the knowledge flowing.</p>
-            </div>
+        <div>
+            <label for="quiz-description">Description</label>
+            <textarea
+                id="quiz-description"
+                name="description"
+                required
+                placeholder="Briefly describe this quiz."
+            ></textarea>
+        </div>
 
-            <button class="primary-btn" id="create-quiz">
-                + CREATE QUIZ
-            </button>
-        </section>
+        <div>
+            <label for="quiz-category">Category</label>
+            <select id="quiz-category" name="category_id" required>
+                <option value="">Loading categories...</option>
+            </select>
+        </div>
 
-        <!-- Admin statistics -->
-        <section class="stats-grid">
+        <div>
+            <label for="quiz-duration">Duration (minutes)</label>
+            <input
+                type="number"
+                id="quiz-duration"
+                name="duration_minutes"
+                min="1"
+                max="300"
+                value="20"
+                required
+            >
+        </div>
 
-            <article class="stat-card">
-                <span class="eyebrow">TOTAL QUIZZES</span>
-                <h2 id="total-quizzes">24</h2>
-                <p>Published and unpublished</p>
-            </article>
+        <p id="create-quiz-message"></p>
 
-            <article class="stat-card">
-                <span class="eyebrow">TOTAL QUESTIONS</span>
-                <h2 id="total-questions">480</h2>
-                <p>Across all quizzes</p>
-            </article>
+        <button type="submit" class="primary-btn">
+            ADD QUIZ
+        </button>
 
-            <article class="stat-card">
-                <span class="eyebrow">REGISTERED USERS</span>
-                <h2 id="total-users">156</h2>
-                <p>Platform members</p>
-            </article>
+        <button type="button" id="cancel-create-quiz">
+            CANCEL
+        </button>
+    </form>
+</section>
 
-            <article class="stat-card">
-                <span class="eyebrow">QUIZ ATTEMPTS</span>
-                <h2 id="total-attempts">892</h2>
-                <p>All time</p>
-            </article>
+    <!-- Admin statistics -->
+    <section class="stats-grid">
+      <article class="stat-card">
+        <span class="eyebrow">TOTAL QUIZZES</span>
+        <h2 id="total-quizzes">—</h2>
+        <p>Published and unpublished</p>
+      </article>
 
-        </section>
+      <article class="stat-card">
+        <span class="eyebrow">TOTAL QUESTIONS</span>
+        <h2 id="total-questions">—</h2>
+        <p>Across all quizzes</p>
+      </article>
 
-        <!-- Management actions -->
-        <section class="dashboard-section">
+      <article class="stat-card">
+        <span class="eyebrow">REGISTERED USERS</span>
+        <h2 id="total-users">—</h2>
+        <p>Platform members</p>
+      </article>
 
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">CONTROL CENTRE</span>
-                    <h2>Manage your platform.</h2>
-                </div>
-            </div>
+      <article class="stat-card">
+        <span class="eyebrow">QUIZ ATTEMPTS</span>
+        <h2 id="total-attempts">—</h2>
+        <p>All time</p>
+      </article>
 
-            <div class="action-grid">
+    </section>
 
-                <button class="action-card" id="manage-quizzes">
-                    <span>01 / CONTENT</span>
-                    <h3>Manage quizzes ↗</h3>
-                    <p>Create, edit and publish quizzes.</p>
-                </button>
+    <!-- Management actions -->
+    <section class="dashboard-section">
 
-                <button class="action-card" id="manage-questions">
-                    <span>02 / QUESTIONS</span>
-                    <h3>Question bank ↗</h3>
-                    <p>Add and manage questions and options.</p>
-                </button>
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">CONTROL CENTRE</span>
+          <h2>Manage your platform.</h2>
+        </div>
+      </div>
 
-                <button class="action-card" id="manage-categories">
-                    <span>03 / ORGANIZATION</span>
-                    <h3>Categories ↗</h3>
-                    <p>Organize quizzes by subject.</p>
-                </button>
+      <div class="action-grid">
 
-                <button class="action-card" id="manage-users">
-                    <span>04 / MEMBERS</span>
-                    <h3>View users ↗</h3>
-                    <p>Monitor registered users and activity.</p>
-                </button>
+        <button class="action-card" id="manage-quizzes">
+          <span>01 / CONTENT</span>
+          <h3>Manage quizzes ↗</h3>
+          <p>Create, edit and publish quizzes.</p>
+        </button>
 
-            </div>
+        <button class="action-card" id="manage-questions">
+          <span>02 / QUESTIONS</span>
+          <h3>Question bank ↗</h3>
+          <p>Add and manage questions and options.</p>
+        </button>
 
-        </section>
+        <button class="action-card" id="manage-categories">
+          <span>03 / ORGANIZATION</span>
+          <h3>Categories ↗</h3>
+          <p>Organize quizzes by subject.</p>
+        </button>
 
-        <!-- Recent quizzes -->
-        <section class="dashboard-section">
+        <button class="action-card" id="manage-users">
+          <span>04 / MEMBERS</span>
+          <h3>View users ↗</h3>
+          <p>Monitor registered users and activity.</p>
+        </button>
 
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">CONTENT OVERVIEW</span>
-                    <h2>Recent quizzes.</h2>
-                </div>
+      </div>
 
-                <a href="#" class="text-link">VIEW ALL ↗</a>
-            </div>
+    </section>
 
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>QUIZ</th>
-                            <th>CATEGORY</th>
-                            <th>QUESTIONS</th>
-                            <th>STATUS</th>
-                        </tr>
-                    </thead>
+    <!-- Recent quizzes -->
+    <section class="dashboard-section">
 
-                    <tbody id="admin-quiz-list">
-                        <tr>
-                            <td>Data Structures</td>
-                            <td>Programming</td>
-                            <td>20</td>
-                            <td><span class="status good">PUBLISHED</span></td>
-                        </tr>
-                        <tr>
-                            <td>Human Biology</td>
-                            <td>Science</td>
-                            <td>15</td>
-                            <td><span class="status good">PUBLISHED</span></td>
-                        </tr>
-                        <tr>
-                            <td>Advanced Mathematics</td>
-                            <td>Mathematics</td>
-                            <td>25</td>
-                            <td><span class="status">DRAFT</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">CONTENT OVERVIEW</span>
+          <h2>Recent quizzes.</h2>
+        </div>
 
-        </section>
+        <a href="#" class="text-link">VIEW ALL ↗</a>
+      </div>
 
-        <footer class="dashboard-footer">
-            <span>QUIZROOM © 2026</span>
-            <span>ADMINISTRATION</span>
-            <a href="index.html">EXPLORE ↗</a>
-        </footer>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>QUIZ</th>
+              <th>CATEGORY</th>
+              <th>QUESTIONS</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
 
-    </main>
+          <tbody id="admin-quiz-list">
+            <tr>
+              <td colspan="4">Loading quizzes...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+    <footer class="dashboard-footer">
+      <span>QUIZROOM © 2026</span>
+      <span>ADMINISTRATION</span>
+      <a href="index.html">EXPLORE ↗</a>
+    </footer>
+
+  </main>
 
 </body>
+
 </html>

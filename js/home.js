@@ -1,87 +1,64 @@
 
-const quizzes = [
-    {
-        id: 1,
-        title: "Data Structures & Algorithms",
-        description: "Test your understanding of fundamental DSA concepts.",
-        category: "programming",
-        questions: 20,
-        duration: 30
-    },
-    {
-        id: 2,
-        title: "JavaScript Fundamentals",
-        description: "Variables, closures, promises and more.",
-        category: "programming",
-        questions: 15,
-        duration: 20
-    },
-    {
-        id: 3,
-        title: "Object Oriented Programming",
-        description: "Classes, inheritance, polymorphism and abstraction.",
-        category: "programming",
-        questions: 20,
-        duration: 25
-    },
-    {
-        id: 4,
-        title: "Fundamentals of Physics",
-        description: "Mechanics, thermodynamics and electromagnetism.",
-        category: "science",
-        questions: 15,
-        duration: 20
-    },
-    {
-        id: 5,
-        title: "Human Biology",
-        description: "Explore the systems of the human body.",
-        category: "science",
-        questions: 20,
-        duration: 25
-    },
-    {
-        id: 6,
-        title: "Linear Algebra",
-        description: "Matrices, vectors and linear transformations.",
-        category: "mathematics",
-        questions: 15,
-        duration: 20
-    },
-    {
-        id: 7,
-        title: "Probability & Statistics",
-        description: "Distributions, probability and statistical inference.",
-        category: "mathematics",
-        questions: 20,
-        duration: 30
-    },
-    {
-        id: 8,
-        title: "General Knowledge",
-        description: "A little bit of everything.",
-        category: "general",
-        questions: 25,
-        duration: 30
+const container = document.getElementById('quiz-container');
+const countLabel = document.getElementById('quiz-count');
+
+let quizzes = [];
+let activeCategory = 'all';
+let activeView = 'grid';
+
+// Convert database category names into homepage filter names.
+function normalizeCategory(category) {
+    const categories = {
+        'programming': 'programming',
+        'science': 'science',
+        'mathematics': 'mathematics',
+        'general knowledge': 'general'
+    };
+
+    return categories[category.toLowerCase()] || 'other';
+}
+
+// Fetch published quizzes from the backend.
+async function loadQuizzes() {
+    container.innerHTML = '<p class="empty-state">Loading quizzes...</p>';
+
+    try {
+        const response = await fetch('/api/quizzes');
+
+        if (!response.ok) {
+            throw new Error('Could not load quizzes.');
+        }
+
+        const data = await response.json();
+
+        quizzes = data.quizzes.map(quiz => ({
+            id: quiz.id,
+            title: quiz.title,
+            description: quiz.description || 'Test your knowledge.',
+            category: normalizeCategory(quiz.category),
+            questions: Number(quiz.question_count),
+            duration: Number(quiz.duration_minutes)
+        }));
+
+        renderQuizzes();
+
+    } catch (error) {
+        console.error('Quiz loading error:', error);
+
+        countLabel.textContent = 'UNABLE TO LOAD QUIZZES';
+        container.innerHTML =
+            '<p class="empty-state">Something went wrong. Please try again later.</p>';
     }
-];
+}
 
-const container = document.getElementById("quiz-container");
-const countLabel = document.getElementById("quiz-count");
-
-let activeCategory = "all";
-let activeView = "grid";
-
-// Render quiz cards
+// Render quiz cards.
 function renderQuizzes() {
-
     const filtered = quizzes.filter(quiz =>
-        activeCategory === "all" ||
+        activeCategory === 'all' ||
         quiz.category === activeCategory
     );
 
-    countLabel.textContent =
-        `${filtered.length} QUIZZES FOUND`;
+    countLabel.textContent = `${filtered.length} QUIZZES FOUND`;
 
     if (filtered.length === 0) {
         container.innerHTML =
@@ -93,16 +70,16 @@ function renderQuizzes() {
         <article class="quiz-card">
 
             <span class="quiz-number">
-                ${String(index + 1).padStart(2, "0")}
+                ${String(index + 1).padStart(2, '0')}
             </span>
 
             <div class="quiz-info">
-                <h3>${quiz.title}</h3>
-                <p>${quiz.description}</p>
+                <h3>${escapeHTML(quiz.title)}</h3>
+                <p>${escapeHTML(quiz.description)}</p>
             </div>
 
             <span class="quiz-category">
-                ${quiz.category.toUpperCase()}
+                ${escapeHTML(quiz.category.toUpperCase())}
             </span>
 
             <div class="quiz-meta">
@@ -110,59 +87,62 @@ function renderQuizzes() {
                 <span>${quiz.duration} MIN</span>
             </div>
 
-            <button class="quiz-action"
-                data-quiz-id="${quiz.id}">
+            <button class="quiz-action" data-quiz-id="${quiz.id}">
                 TAKE QUIZ ↗
             </button>
 
         </article>
-    `).join("");
+    `).join('');
 }
 
-// Category filtering
-document.querySelectorAll(".filter-btn").forEach(button => {
+// Escape database text before inserting it into HTML.
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[character]);
+}
 
-    button.addEventListener("click", () => {
+// Category filtering.
+document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelector('.filter-btn.active')
+            ?.classList.remove('active');
 
-        document.querySelector(".filter-btn.active")
-            ?.classList.remove("active");
-
-        button.classList.add("active");
-
+        button.classList.add('active');
         activeCategory = button.dataset.category;
 
         renderQuizzes();
     });
 });
 
-// Stack / Grid switching
-document.querySelectorAll(".view-btn").forEach(button => {
+// Stack / Grid switching.
+document.querySelectorAll('.view-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelector('.view-btn.active')
+            ?.classList.remove('active');
 
-    button.addEventListener("click", () => {
-
-        document.querySelector(".view-btn.active")
-            ?.classList.remove("active");
-
-        button.classList.add("active");
-
+        button.classList.add('active');
         activeView = button.dataset.view;
 
         container.className = `quiz-container ${activeView}`;
     });
 });
 
-// Quiz selection
-container.addEventListener("click", event => {
-
-    const button = event.target.closest(".quiz-action");
+// Quiz selection.
+container.addEventListener('click', event => {
+    const button = event.target.closest('.quiz-action');
 
     if (!button) return;
 
     const quizId = Number(button.dataset.quizId);
 
-    // Placeholder until authentication and API are implemented
-    window.location.href = `quiz.html?id=${quizId}`;
+    window.location.href = `/pages/quiz.html?id=${quizId}`;
 });
 
-// Initial rendering
-renderQuizzes();
+// Initial load.
+container.className = `quiz-container ${activeView}`;
+loadQuizzes();

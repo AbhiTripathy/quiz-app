@@ -1,148 +1,160 @@
 
+const form = document.getElementById('auth-form');
+
 const params = new URLSearchParams(window.location.search);
+const mode = params.get('mode') || 'login';
+const role = params.get('role') || 'user';
 
-const mode = params.get("mode") === "register" ? "register" : "login";
-const role = params.get("role") === "admin" ? "admin" : "user";
+const isRegister = mode === 'register';
+const isAdmin = role === 'admin';
 
-const isRegister = mode === "register";
-const isAdmin = role === "admin";
+// Form elements
+const nameField = document.getElementById('name-field');
+const confirmField = document.getElementById('confirm-field');
+const inviteField = document.getElementById('invite-field');
 
-const $ = id => document.getElementById(id);
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const confirmInput = document.getElementById('confirm-password');
+const inviteInput = document.getElementById('invite-code');
 
-const fields = {
-    name: $("name-field"),
-    confirm: $("confirm-field"),
-    invite: $("invite-field")
-};
+const errorElement = document.getElementById('form-error');
+const submitButton = document.getElementById('submit-btn');
+
+// Text elements
+const eyebrow = document.getElementById('eyebrow');
+const heroTitle = document.getElementById('hero-title');
+const heroDescription = document.getElementById('hero-description');
+
+const formLabel = document.getElementById('form-label');
+const formTitle = document.getElementById('form-title');
+const formDescription = document.getElementById('form-description');
+
+const switchText = document.getElementById('switch-text');
+const switchLink = document.getElementById('switch-link');
+const roleLabel = document.getElementById('role-label');
+
+// Validate URL parameters
+if (!['login', 'register'].includes(mode) ||
+    !['user', 'admin'].includes(role)) {
+    window.location.replace('/');
+}
 
 // Configure visible fields
-fields.name.classList.toggle("hidden", !isRegister);
-fields.confirm.classList.toggle("hidden", !isRegister);
-fields.invite.classList.toggle("hidden", !isRegister || !isAdmin);
+nameField.hidden = !isRegister;
+confirmField.hidden = !isRegister;
+inviteField.hidden = !(isRegister && isAdmin);
 
-// Configure required fields
-$("name").required = isRegister;
-$("confirm-password").required = isRegister;
-$("invite-code").required = isRegister && isAdmin;
+nameInput.required = isRegister;
+confirmInput.required = isRegister;
+inviteInput.required = isRegister && isAdmin;
+
+passwordInput.autocomplete = isRegister
+    ? 'new-password'
+    : 'current-password';
 
 // Configure page content
-$("hero-title").innerHTML = isRegister
-    ? "JOIN THE<br>CURIOUS."
-    : "WELCOME<br>BACK.";
+if (isRegister) {
+    eyebrow.textContent = 'START YOUR JOURNEY';
+    heroTitle.innerHTML = 'CREATE<br>YOUR ACCOUNT.';
+    heroDescription.textContent =
+        'Join Quizroom and discover what you know.';
 
-$("hero-description").textContent = isRegister
-    ? "Create an account and start challenging what you know."
-    : "Pick up where you left off. There's always something new to learn.";
+    formLabel.textContent = 'NEW ACCOUNT';
+    formTitle.textContent = 'Sign up.';
+    formDescription.textContent =
+        'Create your account to get started.';
 
-$("eyebrow").textContent = isAdmin
-    ? "ADMINISTRATION"
-    : "YOUR KNOWLEDGE JOURNEY";
+    submitButton.textContent = 'CREATE ACCOUNT ↗';
 
-$("form-label").textContent = isAdmin
-    ? "ADMIN ACCESS"
-    : "ACCOUNT ACCESS";
+    switchText.textContent = 'Already have an account?';
+    switchLink.textContent = 'Sign in ↗';
 
-$("form-title").textContent = isRegister
-    ? "Create account."
-    : "Sign in.";
+} else {
+    eyebrow.textContent = 'YOUR KNOWLEDGE JOURNEY';
+    heroTitle.innerHTML = 'WELCOME<br>BACK.';
+    heroDescription.textContent =
+        'Pick up where you left off. There is always something new to learn.';
 
-$("form-description").textContent = isAdmin
-    ? "Access the quiz management dashboard."
-    : "Enter your credentials to continue.";
+    formLabel.textContent = 'ACCOUNT ACCESS';
+    formTitle.textContent = 'Sign in.';
+    formDescription.textContent =
+        'Enter your credentials to continue.';
 
-$("submit-btn").textContent = isRegister
-    ? "CREATE ACCOUNT ↗"
-    : "SIGN IN ↗";
+    submitButton.textContent = 'SIGN IN ↗';
 
-$("role-label").textContent = isAdmin
-    ? "ADMIN ACCOUNT"
-    : "USER ACCOUNT";
+    switchText.textContent = 'New here?';
+    switchLink.textContent = 'Create an account ↗';
+}
 
-$("switch-text").textContent = isRegister
-    ? "Already have an account?"
-    : "New here?";
+roleLabel.textContent = isAdmin ? 'ADMIN ACCOUNT' : 'USER ACCOUNT';
 
-$("switch-link").textContent = isRegister
-    ? "Sign in ↗"
-    : "Create an account ↗";
+// Switch between login and registration
+switchLink.href = isRegister
+    ? `/pages/auth.html?mode=login&role=${role}`
+    : `/pages/auth.html?mode=register&role=${role}`;
 
-$("switch-link").href =
-    `auth.html?mode=${isRegister ? "login" : "register"}&role=${role}`;
-
-$("admin-link").href = isAdmin
-    ? "auth.html?mode=login&role=user"
-    : "auth.html?mode=login&role=admin";
-
-$("admin-link").textContent = isAdmin ? "USER ↗" : "ADMIN ↗";
-
-$("password").autocomplete = isRegister
-    ? "new-password"
-    : "current-password";
-
-// Form submission
-$("auth-form").addEventListener("submit", async event => {
+// Handle form submission
+form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const error = $("form-error");
-    const button = $("submit-btn");
+    errorElement.textContent = '';
 
-    error.textContent = "";
-
-    const password = $("password").value;
-    const confirmPassword = $("confirm-password").value;
-
-    if (isRegister && password !== confirmPassword) {
-        error.textContent = "Passwords do not match.";
+    if (isRegister && passwordInput.value !== confirmInput.value) {
+        errorElement.textContent = 'Passwords do not match.';
         return;
     }
 
+    submitButton.disabled = true;
+
     const payload = {
-        email: $("email").value.trim(),
-        password,
-        role
+        email: emailInput.value.trim(),
+        password: passwordInput.value
     };
 
     if (isRegister) {
-        payload.name = $("name").value.trim();
+        payload.name = nameInput.value.trim();
+        payload.role = role;
+
+        if (isAdmin) {
+            payload.inviteCode = inviteInput.value;
+        }
     }
 
-    if (isRegister && isAdmin) {
-        payload.inviteCode = $("invite-code").value;
-    }
-
-    button.disabled = true;
-    button.textContent = "PLEASE WAIT...";
+    const endpoint = isRegister
+        ? '/api/auth/register'
+        : '/api/auth/login';
 
     try {
-        const endpoint = isRegister
-            ? "/api/auth/register"
-            : "/api/auth/login";
-
         const response = await fetch(endpoint, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
-            credentials: "same-origin",
+            credentials: 'same-origin',
             body: JSON.stringify(payload)
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || "Something went wrong.");
+            throw new Error(data.message || 'Request failed.');
         }
 
-        window.location.href = isAdmin
-            ? "/pages/admin.html"
-            : "/pages/dashboard.html";
+        if (isRegister) {
+            window.location.href =
+                `/pages/auth.html?mode=login&role=${role}`;
+            return;
+        }
 
-    } catch (err) {
-        error.textContent = err.message;
+        window.location.href = data.user.role === 'admin'
+            ? '/pages/admin.html'
+            : '/pages/dashboard.html';
+
+    } catch (error) {
+        errorElement.textContent = error.message;
     } finally {
-        button.disabled = false;
-        button.textContent = isRegister
-            ? "CREATE ACCOUNT ↗"
-            : "SIGN IN ↗";
+        submitButton.disabled = false;
     }
 });

@@ -419,3 +419,37 @@ td:first-child {
         gap: 15px;
     }
 }
+
+#create-quiz-form {
+    display: grid;
+    gap: 18px;
+    max-width: 600px;
+}
+
+#create-quiz-form > div {
+    display: grid;
+    gap: 8px;
+}
+
+#create-quiz-form input,
+#create-quiz-form textarea,
+#create-quiz-form select {
+    width: 100%;
+    padding: 12px;
+    font: inherit;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#create-quiz-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+#create-quiz-form label {
+    font-weight: 600;
+}
+
+#create-quiz-message {
+    margin: 0;
+}

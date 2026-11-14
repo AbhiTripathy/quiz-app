@@ -1,160 +1,126 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUIZROOM — Dashboard</title>
-    <link rel="stylesheet" href="../styles/dashboard.css">
-    <script src="../js/dashboard.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUIZROOM — Dashboard</title>
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <script src="../js/dashboard.js" defer></script>
 </head>
+
 <body data-role="user">
 
-    <header class="navbar">
-        <a href="index.html" class="logo">Q.</a>
+  <header class="navbar">
+    <a href="index.html" class="logo">Q.</a>
 
-        <nav class="nav-left">
-            <a href="index.html" class="nav-pill">EXPLORE</a>
-            <a href="dashboard.html" class="nav-pill active">DASHBOARD</a>
-        </nav>
+    <nav class="nav-left">
+      <a href="index.html" class="nav-pill">EXPLORE</a>
+      <a href="dashboard.html" class="nav-pill active">DASHBOARD</a>
+    </nav>
 
-        <div class="nav-right">
-            <span class="user-label">USER ACCOUNT</span>
-            <button class="nav-pill logout-btn">LOG OUT ↗</button>
+    <div class="nav-right">
+      <span class="user-label">USER ACCOUNT</span>
+      <button class="nav-pill logout-btn">LOG OUT ↗</button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+
+    <section class="welcome">
+      <div>
+        <span class="eyebrow">YOUR PERSONAL SPACE</span>
+        <h1>Welcome back,<br><span id="user-name">Learner.</span></h1>
+        <p>Ready to challenge yourself today?</p>
+      </div>
+
+      <a href="index.html" class="primary-btn">
+        EXPLORE QUIZZES ↗
+      </a>
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats-grid">
+
+      <article class="stat-card">
+        <span class="eyebrow">QUIZZES ATTEMPTED</span>
+        <h2 id="attempted">—</h2>
+        <p>All time</p>
+      </article>
+
+      <article class="stat-card">
+        <span class="eyebrow">AVERAGE SCORE</span>
+        <h2 id="average">—</h2>
+        <p>Across all attempts</p>
+      </article>
+
+      <article class="stat-card">
+        <span class="eyebrow">BEST SCORE</span>
+        <h2 id="best">—</h2>
+        <p>Your personal best</p>
+      </article>
+
+    </section>
+
+    <!-- Recent attempts -->
+    <section class="dashboard-section">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">YOUR ACTIVITY</span>
+          <h2>Recent attempts.</h2>
         </div>
-    </header>
 
-    <main class="dashboard">
+        <a href="#" class="text-link">VIEW ALL ↗</a>
+      </div>
 
-        <section class="welcome">
-            <div>
-                <span class="eyebrow">YOUR PERSONAL SPACE</span>
-                <h1>Welcome back,<br><span id="user-name">Learner.</span></h1>
-                <p>Ready to challenge yourself today?</p>
-            </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>QUIZ</th>
+              <th>DATE</th>
+              <th>SCORE</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
 
-            <a href="index.html" class="primary-btn">
-                EXPLORE QUIZZES ↗
-            </a>
-        </section>
+          <tbody id="attempt-list">
+            <tr>
+              <td colspan="4">Loading your activity...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Statistics -->
-        <section class="stats-grid">
+    </section>
 
-            <article class="stat-card">
-                <span class="eyebrow">QUIZZES ATTEMPTED</span>
-                <h2 id="attempted">12</h2>
-                <p>All time</p>
-            </article>
+    <!-- Recommended quizzes -->
+    <section class="dashboard-section">
 
-            <article class="stat-card">
-                <span class="eyebrow">AVERAGE SCORE</span>
-                <h2 id="average">78%</h2>
-                <p>Across all attempts</p>
-            </article>
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">KEEP LEARNING</span>
+          <h2>Explore more.</h2>
+        </div>
 
-            <article class="stat-card">
-                <span class="eyebrow">BEST SCORE</span>
-                <h2 id="best">96%</h2>
-                <p>Your personal best</p>
-            </article>
+        <a href="index.html" class="text-link">ALL QUIZZES ↗</a>
+      </div>
 
-        </section>
+      <div class="mini-grid" id="recommended-quizzes">
+        <p>Loading quizzes...</p>
+      </div>
 
-        <!-- Recent attempts -->
-        <section class="dashboard-section">
+    </section>
 
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">YOUR ACTIVITY</span>
-                    <h2>Recent attempts.</h2>
-                </div>
+    <footer class="dashboard-footer">
+      <span>QUIZROOM © 2026</span>
+      <span>BUILT FOR THE CURIOUS.</span>
+      <a href="index.html">EXPLORE ↗</a>
+    </footer>
 
-                <a href="#" class="text-link">VIEW ALL ↗</a>
-            </div>
-
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>QUIZ</th>
-                            <th>DATE</th>
-                            <th>SCORE</th>
-                            <th>STATUS</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="attempt-list">
-                        <tr>
-                            <td>Data Structures</td>
-                            <td>15 Nov 2026</td>
-                            <td>92%</td>
-                            <td><span class="status good">COMPLETED</span></td>
-                        </tr>
-                        <tr>
-                            <td>JavaScript Fundamentals</td>
-                            <td>13 Nov 2026</td>
-                            <td>76%</td>
-                            <td><span class="status good">COMPLETED</span></td>
-                        </tr>
-                        <tr>
-                            <td>Linear Algebra</td>
-                            <td>10 Nov 2026</td>
-                            <td>58%</td>
-                            <td><span class="status">COMPLETED</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </section>
-
-        <!-- Recommended quizzes -->
-        <section class="dashboard-section">
-
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">KEEP LEARNING</span>
-                    <h2>Explore more.</h2>
-                </div>
-
-                <a href="index.html" class="text-link">ALL QUIZZES ↗</a>
-            </div>
-
-            <div class="mini-grid" id="recommended-quizzes">
-
-                <article class="mini-card">
-                    <span class="eyebrow">PROGRAMMING</span>
-                    <h3>Operating Systems</h3>
-                    <p>20 QUESTIONS · 25 MIN</p>
-                    <a href="index.html">EXPLORE ↗</a>
-                </article>
-
-                <article class="mini-card">
-                    <span class="eyebrow">SCIENCE</span>
-                    <h3>Human Biology</h3>
-                    <p>20 QUESTIONS · 25 MIN</p>
-                    <a href="index.html">EXPLORE ↗</a>
-                </article>
-
-                <article class="mini-card">
-                    <span class="eyebrow">MATHEMATICS</span>
-                    <h3>Probability</h3>
-                    <p>15 QUESTIONS · 20 MIN</p>
-                    <a href="index.html">EXPLORE ↗</a>
-                </article>
-
-            </div>
-
-        </section>
-
-        <footer class="dashboard-footer">
-            <span>QUIZROOM © 2026</span>
-            <span>BUILT FOR THE CURIOUS.</span>
-            <a href="index.html">EXPLORE ↗</a>
-        </footer>
-
-    </main>
+  </main>
 
 </body>
+
 </html>
