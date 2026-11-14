@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUIZROOM — Results</title>
+  <link rel="stylesheet" href="../styles/quiz.css">
+  <script src="../js/quiz.js" defer></script>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <a href="index.html" class="logo">Q.</a>
+
+    <nav class="nav-right">
+      <span class="eyebrow">QUIZ COMPLETED</span>
+      <a href="dashboard.html" class="nav-pill">DASHBOARD</a>
+    </nav>
+  </header>
+
+  <main class="quiz-page result-page">
+
+    <section class="result-hero">
+      <span class="eyebrow">YOUR PERFORMANCE</span>
+
+      <h1>That's a<br><span>wrap.</span></h1>
+
+      <p id="result-description">
+        Your quiz submission has been received.
+      </p>
+    </section>
+
+    <!-- Score -->
+    <section class="score-section">
+
+      <div class="score-main">
+        <span class="eyebrow">YOUR SCORE</span>
+        <h2 id="result-score">--<span>/ 10</span></h2>
+        <p id="result-grade">AWAITING EVALUATION</p>
+      </div>
+
+      <div class="score-details">
+
+        <div>
+          <span class="eyebrow">CORRECT</span>
+          <h3 id="correct-count">--</h3>
+        </div>
+
+        <div>
+          <span class="eyebrow">INCORRECT</span>
+          <h3 id="incorrect-count">--</h3>
+        </div>
+
+        <div>
+          <span class="eyebrow">ACCURACY</span>
+          <h3 id="accuracy">--</h3>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Review -->
+    <section class="dashboard-section">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">LEARN FROM YOUR ATTEMPT</span>
+          <h2>Answer review.</h2>
+        </div>
+      </div>
+
+      <div id="review-list">
+        <p class="eyebrow">
+          DETAILED ANSWER REVIEW WILL APPEAR AFTER SERVER EVALUATION.
+        </p>
+      </div>
+
+    </section>
+
+    <div class="result-actions">
+      <a href="index.html" class="secondary-btn">
+        EXPLORE MORE
+      </a>
+
+      <a href="dashboard.html" class="primary-btn">
+        MY DASHBOARD ↗
+      </a>
+    </div>
+
+    <footer class="dashboard-footer">
+      <span>QUIZROOM © 2026</span>
+      <span>BUILT FOR THE CURIOUS.</span>
+      <a href="index.html">EXPLORE ↗</a>
+    </footer>
+
+  </main>
+  <script src="../js/result.js" defer></script>
+</body>
+
+</html>
