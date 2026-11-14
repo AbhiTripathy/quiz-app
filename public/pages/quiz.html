@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIZROOM — Take Quiz</title>
+    <link rel="stylesheet" href="../styles/quiz.css">
+    <script src="../js/quiz.js" defer></script>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">Q.</a>
+
+        <div class="nav-right">
+            <span class="eyebrow">QUIZ IN PROGRESS</span>
+            <a href="dashboard.html" class="nav-pill">DASHBOARD</a>
+        </div>
+    </header>
+
+    <main class="quiz-page">
+
+        <!-- Instructions screen -->
+        <section id="instructions-screen">
+
+            <div class="quiz-hero">
+                <span class="eyebrow" id="quiz-category">PROGRAMMING</span>
+
+                <h1 id="quiz-title">Data Structures<br>& Algorithms.</h1>
+
+                <p id="quiz-description">
+                    Test your understanding of fundamental
+                    data structures and algorithms.
+                </p>
+            </div>
+
+            <div class="quiz-stats">
+                <div>
+                    <span class="eyebrow">QUESTIONS</span>
+                    <h2 id="question-count">10</h2>
+                </div>
+
+                <div>
+                    <span class="eyebrow">DURATION</span>
+                    <h2 id="quiz-duration">15 MIN</h2>
+                </div>
+
+                <div>
+                    <span class="eyebrow">TOTAL MARKS</span>
+                    <h2 id="total-marks">10</h2>
+                </div>
+
+                <div>
+                    <span class="eyebrow">FORMAT</span>
+                    <h2>MCQ</h2>
+                </div>
+            </div>
+
+            <section class="instructions">
+                <span class="eyebrow">BEFORE YOU BEGIN</span>
+                <h2>Instructions.</h2>
+
+                <ul>
+                    <li>Each question has one correct answer.</li>
+                    <li>Each question carries the marks displayed.</li>
+                    <li>There is no negative marking.</li>
+                    <li>The timer starts when you begin the quiz.</li>
+                    <li>Your answers are submitted automatically when time expires.</li>
+                </ul>
+            </section>
+
+            <div class="quiz-start">
+                <a href="dashboard.html" class="text-link">
+                    ← GO BACK
+                </a>
+
+                <button class="primary-btn" id="start-quiz">
+                    START QUIZ ↗
+                </button>
+            </div>
+
+        </section>
+
+        <!-- Active quiz screen -->
+        <section id="active-screen" class="hidden">
+
+            <div class="active-header">
+                <div>
+                    <span class="eyebrow" id="active-category">
+                        PROGRAMMING
+                    </span>
+                    <h2 id="active-title">Data Structures & Algorithms</h2>
+                </div>
+
+                <div class="timer">
+                    <span class="eyebrow">TIME LEFT</span>
+                    <h2 id="timer-display">15:00</h2>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-info">
+                    <span id="question-position">QUESTION 01 / 10</span>
+                    <span id="answered-count">0 ANSWERED</span>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="question-layout">
+
+                <section class="question-area">
+
+                    <div class="question-top">
+                        <span class="eyebrow" id="question-number">
+                            QUESTION 01
+                        </span>
+                        <span class="eyebrow">1 MARK</span>
+                    </div>
+
+                    <h2 id="question-text">
+                        Which data structure follows the LIFO principle?
+                    </h2>
+
+                    <div class="options" id="options-container">
+                    </div>
+
+                    <div class="question-controls">
+                        <button class="secondary-btn" id="previous-btn">
+                            ← PREVIOUS
+                        </button>
+
+                        <button class="primary-btn" id="next-btn">
+                            NEXT QUESTION →
+                        </button>
+                    </div>
+
+                </section>
+
+                <aside class="question-sidebar">
+
+                    <span class="eyebrow">QUESTION NAVIGATOR</span>
+
+                    <div class="question-grid" id="question-grid">
+                    </div>
+
+                    <div class="legend">
+                        <p><span class="legend-dot answered"></span> Answered</p>
+                        <p><span class="legend-dot current"></span> Current</p>
+                        <p><span class="legend-dot"></span> Not answered</p>
+                    </div>
+
+                    <button class="submit-btn" id="submit-quiz">
+                        SUBMIT QUIZ ↗
+                    </button>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+        <!-- Submission confirmation -->
+        <div class="modal-overlay hidden" id="submit-modal">
+            <div class="modal">
+                <span class="eyebrow">FINAL CHECK</span>
+                <h2>Ready to submit?</h2>
+                <p id="submit-message">
+                    You have unanswered questions.
+                </p>
+
+                <div class="modal-actions">
+                    <button class="secondary-btn" id="cancel-submit">
+                        GO BACK
+                    </button>
+
+                    <button class="primary-btn" id="confirm-submit">
+                        CONFIRM SUBMISSION
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>
